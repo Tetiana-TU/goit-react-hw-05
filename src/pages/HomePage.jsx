@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MovieList from "../components/MovieList";
+import css from "./HomePage.module.css";
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
@@ -15,7 +16,7 @@ const HomePage = () => {
       .get(apiUrl, {
         params: {
           api_key: apiKey,
-          language: "uk-UA",
+          language: "en-US",
           page: 1,
         },
       })
@@ -28,12 +29,13 @@ const HomePage = () => {
         setLoading(false);
       });
   }, []);
+  if (loading) return <p>Завантаження...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
-      <h1>Trending today</h1>
-      {loading ? <p>Завантаження...</p> : <MovieList movies={movies} />}
-      {error && <p>Помилка: {error}</p>}
+      <h1 className={css.title}>Trending today</h1>
+      <MovieList movies={movies} />
     </div>
   );
 };

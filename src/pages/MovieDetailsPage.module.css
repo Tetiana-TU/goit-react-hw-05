@@ -1,0 +1,56 @@
+.contCastRev {
+  text-decoration: none;
+  color: #007bff; /* Синій колір для лінків */
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out; /* Плавна анімація для ефектів */
+  cursor: pointer; /* Змінює курсор на "палець" при наведенні */
+}
+
+.contCastRev:hover {
+  color: #0056b3; /* Темніший синій колір при наведенні */
+  text-decoration: underline; /* Підкреслює лінк при наведенні */
+}
+
+/* Стиль для лінка "Go Back" */
+.goBackLink {
+  text-decoration: none;
+  color: #007bff; /* Синій колір для лінків */
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out; /* Плавна анімація для ефектів */
+  cursor: pointer;
+}
+
+/* Стилі для лінка при активному стані */
+.contCastRev:active,
+.goBackLink:active {
+  transform: scale(0.98); /* Злегка зменшується лінк при натисканні */
+}
+
+/* Стилі для контейнера лінків */
+.linkContainer {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+.contImg {
+  display: flex;
+  flex-wrap: wrap;
+}
+.infomovie {
+  display: flex;
+  flex-wrap: wrap;
+}
+.contimginfo {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Лінки на мобільних пристроях */
+@media (max-width: 768px) {
+  .contCastRev,
+  .goBackLink {
+    font-size: 16px; /* Зменшуємо шрифт для мобільних */
+  }
+}

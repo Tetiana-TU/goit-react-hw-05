@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import MovieCast from "../components/MovieCast";
 import MovieReviews from "../components/MovieReviews";
-
+import css from "./MovieDetailsPage.module.css";
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [castVisible, setCastVisible] = useState(false);
+  const [reviewsVisible, setReviewsVisible] = useState(false);
   const navigate = useNavigate();
 
   const apiKey = "3a694353f8738d14f5f72dd344727341";
@@ -18,7 +20,7 @@ const MovieDetailsPage = () => {
       .get(apiUrl, {
         params: {
           api_key: apiKey,
-          language: "uk-UA",
+          language: "en-US",
         },
       })
       .then((response) => {
@@ -31,19 +33,64 @@ const MovieDetailsPage = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
-
+  const toggleCast = () => setCastVisible((prev) => !prev);
+  const toggleReviews = () => setReviewsVisible((prev) => !prev);
   if (loading) return <p>Завантаження...</p>;
 
   return (
     <div>
-      <h1>{movie.title}</h1>
-      <p>{movie.overview}</p>
-      <button onClick={handleGoBack}>Go Back</button>
+      <div className={"css.contimginfo"}>
+        <div className={"css.contImg"}>
+          <div>
+            <Link to="/" className={css.goBackLink}>
+              Go Back
+            </Link>
+          </div>
+          <img
+            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+            alt={movie.title}
+          />
+        </div>
 
-      <MovieCast movieId={movieId} />
-      <MovieReviews movieId={movieId} />
+        <div className={"css.infomovie"}>
+          <h1>{movie.title}</h1>
+          <p>{movie.overview}</p>
+          <h3>
+            {movie.genres && movie.genres.length > 0
+              ? movie.genres.map((genre) => genre.name).join(", ")
+              : "Genres not available"}
+          </h3>
+        </div>
+      </div>
+
+      <div>
+        <Link
+          to="#"
+          className={css.contCastRev}
+          onClick={(e) => {
+            e.preventDefault(); // Запобігає переходу за посиланням
+            toggleCast();
+          }}
+        >
+          {castVisible ? "Go Back" : "Cast"}
+        </Link>
+        {castVisible && <MovieCast movieId={movieId} />}
+      </div>
+
+      <div>
+        <Link
+          to="#"
+          className={css.contCastRev}
+          onClick={(e) => {
+            e.preventDefault(); // Запобігає переходу за посиланням
+            toggleReviews();
+          }}
+        >
+          {reviewsVisible ? "Go Back" : "Reviews"}
+        </Link>
+        {reviewsVisible && <MovieReviews movieId={movieId} />}
+      </div>
     </div>
   );
 };
-
 export default MovieDetailsPage;

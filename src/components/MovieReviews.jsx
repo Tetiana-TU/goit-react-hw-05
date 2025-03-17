@@ -12,23 +12,25 @@ const MovieReviews = ({ movieId }) => {
           api_key: apiKey,
         },
       })
-      .then((response) => {
-        setReviews(response.data.results);
-      });
+      .then((response) => setReviews(response.data.results))
+      .catch((err) => console.error(err));
   }, [movieId]);
 
   return (
     <div>
-      <h3>Огляди</h3>
-      <ul>
-        {reviews.map((review) => (
-          <li key={review.id}>
-            <p>
-              {review.author}: {review.content}
-            </p>
-          </li>
-        ))}
-      </ul>
+      <h3>Reviews</h3>
+      {reviews.length > 0 ? (
+        <ul>
+          {reviews.map((review) => (
+            <li key={review.id}>
+              <h4>{review.author}</h4>
+              <p>{review.content}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>We don't have any reviews for this movie.</p>
+      )}
     </div>
   );
 };

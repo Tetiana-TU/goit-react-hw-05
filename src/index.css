@@ -1,14 +1,13 @@
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  /* text-align: center; */
   max-width: 1440px;
-  margin: 0 auto;
-  padding: 16px 156px;
+  /* padding: 16px 156px; */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
 
 a {
@@ -21,14 +20,14 @@ a:hover {
 }
 
 body {
-  margin: 0;
+  /* margin: 0; */
   display: flex;
-  place-items: center;
+  /* place-items: center; */
   min-width: 320px;
   min-height: 100vh;
   background: linear-gradient(to bottom, transparent, rgb(52, 52, 68));
-  padding: 20px;
-  height: 100%;
+  /* padding: 20px;
+  height: 100%; */
 }
 
 h1 {
@@ -41,12 +40,17 @@ p {
   color: black;
   margin: 0;
 }
-li {
+/* li {
   list-style: none;
-}
+} */
 button {
-    cursor: pointer; /* Курсор при наведенні */
- 
+  display: block;
+  width: 200px;
+  cursor: pointer;
+  border: 2px solid #ff6347;
+  border-radius: 8px;
+  padding: 5px 5px;
+  font-size: 1.5rem;
 }
 
 /* Стилі для кнопки при наведенні */
@@ -61,6 +65,7 @@ button:focus {
   outline: none; /* Вимикаємо стандартну обводку при фокусі */
   box-shadow: 0 0 5px 3px rgba(255, 99, 71, 0.5); /* Легка тінь для фокусу */
 }
+
 input {
   font-size: 1.5rem; /* Великий шрифт */
   padding: 12px 20px; /* Великі відступи для комфортного введення */
