@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import MovieList from "../components/MovieList";
@@ -18,10 +18,10 @@ const MoviesPage = () => {
     setQuery(queryFromParams);
   }, [searchParams]);
 
-  const handleSearch = async () => {
+  useEffect(() => {
     if (!query) return;
     setLoading(true);
-
+const fetchMovies = async ()=>{
     try {
       const response = await axios.get(apiUrl, {
         params: {
@@ -32,14 +32,17 @@ const MoviesPage = () => {
       });
       setMovies(response.data.results);
       setLoading(false);
-
-      setSearchParams({ query });
-      setQuery("");
+     
     } catch (error) {
       setLoading(false);
       console.error("Error fetching movies:", error);
     }
   };
+  fetchMovies ();
+}, [query]);
+const handleSearch=()=> {if (!query) return;
+  setSearchParams({query});
+};
 
   return (
     <>

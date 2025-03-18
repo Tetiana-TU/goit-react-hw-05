@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Suspense } from "react";
+import  { useState, useEffect, Suspense, useRef } from "react";
 import axios from "axios";
-import { useParams, useNavigate, NavLink, Outlet } from "react-router-dom";
+import { useParams, useNavigate, NavLink, Outlet, useLocation } from "react-router-dom";
 import css from "./MovieDetailsPage.module.css";
 
 const MovieDetailsPage = () => {
@@ -8,6 +8,9 @@ const MovieDetailsPage = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const prevLocation = useRef(location.state?.from || "/movies");
 
   const apiKey = "3a694353f8738d14f5f72dd344727341";
   const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
@@ -25,10 +28,10 @@ const MovieDetailsPage = () => {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [movieId]);
+  }, [movieId, apiUrl, apiKey, setMovie, setLoading]);
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate(prevLocation.current);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -38,9 +41,9 @@ const MovieDetailsPage = () => {
       <div className={css.contimginfo}>
         <div className={css.contImg}>
           <div>
-            <NavLink to="/" className={css.goBackLink}>
+          <button onClick={handleGoBack} className={css.goBackLink}>
               Go Back
-            </NavLink>
+            </button>
           </div>
           <img
             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
