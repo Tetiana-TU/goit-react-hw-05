@@ -8,7 +8,7 @@ const MovieList = ({ movies }) => {
       {movies.map((movie) => (
         <div key={movie.id} className={css.movieItem}>
           <Link to={`/movies/${movie.id}`}>
-            <h3>{movie.title}</h3>
+            <h2>{movie.title}</h2>
             {movie.genres && movie.genres.length > 0 && (
               <h4>{movie.genres.map((genre) => genre.name).join(", ")}</h4>
             )}

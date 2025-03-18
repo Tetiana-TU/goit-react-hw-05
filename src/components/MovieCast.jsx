@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const MovieCast = ({ movieId }) => {
+const MovieCast = () => {
+  const { movieId } = useParams();
   const [cast, setCast] = useState([]);
   const apiKey = "3a694353f8738d14f5f72dd344727341";
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500/";
 
   useEffect(() => {
-    axios
-      .get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
-        params: {
-          api_key: apiKey,
-        },
-      })
-      .then((response) => setCast(response.data.cast))
-      .catch((err) => console.error(err));
+    if (movieId) {
+      axios
+        .get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
+          params: {
+            api_key: apiKey,
+          },
+        })
+        .then((response) => setCast(response.data.cast))
+        .catch((err) => console.error(err));
+    }
   }, [movieId]);
 
   return (
@@ -22,7 +26,10 @@ const MovieCast = ({ movieId }) => {
       <h3>Cast</h3>
       <ul>
         {cast.map((actor) => (
-          <li key={actor.id} style={{ display: "flex", marginBottom: "20px" }}>
+          <li
+            key={`${actor.id}-${actor.name}`}
+            style={{ display: "flex", marginBottom: "20px" }}
+          >
             {actor.profile_path ? (
               <img
                 src={`${imageBaseUrl}${actor.profile_path}`}

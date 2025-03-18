@@ -35,22 +35,14 @@
   margin-top: 20px;
 }
 .contImg {
-  display: flex;
-  flex-wrap: wrap;
+  display: block;
 }
 .infomovie {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
 }
 .contimginfo {
   display: flex;
-  flex-direction: row;
-}
-
-/* Лінки на мобільних пристроях */
-@media (max-width: 768px) {
-  .contCastRev,
-  .goBackLink {
-    font-size: 16px; /* Зменшуємо шрифт для мобільних */
-  }
+  gap: 30px;
 }

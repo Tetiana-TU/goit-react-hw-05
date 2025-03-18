@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const MovieReviews = ({ movieId }) => {
+const MovieReviews = () => {
+  const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
   const apiKey = "3a694353f8738d14f5f72dd344727341";
 
   useEffect(() => {
-    axios
-      .get(`https://api.themoviedb.org/3/movie/${movieId}/reviews`, {
-        params: {
-          api_key: apiKey,
-        },
-      })
-      .then((response) => setReviews(response.data.results))
-      .catch((err) => console.error(err));
+    if (movieId) {
+      axios
+        .get(`https://api.themoviedb.org/3/movie/${movieId}/reviews`, {
+          params: {
+            api_key: apiKey,
+          },
+        })
+        .then((response) => setReviews(response.data.results))
+        .catch((err) => console.error(err));
+    } else {
+      console.error("movieId is undefined");
+    }
   }, [movieId]);
 
   return (

@@ -52,7 +52,7 @@ const MoviesPage = () => {
         />
         <button onClick={handleSearch}>Search</button>
       </div>
-      {loading ? <p>Завантаження...</p> : <MovieList movies={movies} />}
+      {loading ? <p>Loading...</p> : <MovieList movies={movies} />}
     </>
   );
 };
