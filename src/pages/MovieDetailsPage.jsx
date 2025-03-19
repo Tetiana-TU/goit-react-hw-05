@@ -1,6 +1,12 @@
-import  { useState, useEffect, Suspense, useRef } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import axios from "axios";
-import { useParams, useNavigate, NavLink, Outlet, useLocation } from "react-router-dom";
+import {
+  useParams,
+  useNavigate,
+  NavLink,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
 import css from "./MovieDetailsPage.module.css";
 
 const MovieDetailsPage = () => {
@@ -41,7 +47,7 @@ const MovieDetailsPage = () => {
       <div className={css.contimginfo}>
         <div className={css.contImg}>
           <div>
-          <button onClick={handleGoBack} className={css.goBackLink}>
+            <button onClick={handleGoBack} className={css.goBackLink}>
               Go Back
             </button>
           </div>
@@ -66,10 +72,14 @@ const MovieDetailsPage = () => {
 
       <ul>
         <li>
-          <NavLink to="cast">Cast</NavLink>
+          <NavLink to="cast" className={css.pagelinkclass}>
+            Cast
+          </NavLink>
         </li>
         <li>
-          <NavLink to="reviews">Reviews</NavLink>
+          <NavLink to="reviews" className={css.pagelinkclass}>
+            Reviews
+          </NavLink>
         </li>
       </ul>
       <Suspense fallback={<div>Loading subpage...</div>}>

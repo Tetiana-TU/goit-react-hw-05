@@ -20,6 +20,7 @@
   font-weight: bold;
   transition: all 0.3s ease-in-out; /* Плавна анімація для ефектів */
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 /* Стилі для лінка при активному стані */
@@ -45,4 +46,7 @@
 .contimginfo {
   display: flex;
   gap: 30px;
+}
+.pagelinkclass {
+  font-size: 30px;
 }
