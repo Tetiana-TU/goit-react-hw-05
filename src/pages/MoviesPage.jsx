@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import MovieList from "../components/MovieList";
 import css from "./MoviesPage.module.css";
+import { useDebounce } from "use-debounce";
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
@@ -14,35 +15,39 @@ const MoviesPage = () => {
   const apiUrl = "https://api.themoviedb.org/3/search/movie";
 
   useEffect(() => {
-    const queryFromParams = searchParams.get("query") || "";
+    const queryFromParams = searchParams.get("query") ?? "";
     setQuery(queryFromParams);
   }, [searchParams]);
+  const [debouncedQuery] = useDebounce(query, 300);
 
   useEffect(() => {
-    if (!query) return;
+    if (!debouncedQuery) return;
+
     setLoading(true);
-const fetchMovies = async ()=>{
-    try {
-      const response = await axios.get(apiUrl, {
-        params: {
-          api_key: apiKey,
-          query: query,
-          language: "en-US",
-        },
-      });
-      setMovies(response.data.results);
-      setLoading(false);
-     
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching movies:", error);
-    }
+
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get(apiUrl, {
+          params: {
+            api_key: apiKey,
+            query: query,
+            language: "en-US",
+          },
+        });
+        setMovies(response.data.results);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching movies:", error);
+      }
+    };
+    fetchMovies();
+  }, [debouncedQuery]);
+
+  const handleSearch = () => {
+    if (!query) return;
+    setSearchParams({ query });
   };
-  fetchMovies ();
-}, [query]);
-const handleSearch=()=> {if (!query) return;
-  setSearchParams({query});
-};
 
   return (
     <>
