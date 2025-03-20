@@ -3,13 +3,13 @@ import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import MovieList from "../components/MovieList";
 import css from "./MoviesPage.module.css";
-import { useDebounce } from "use-debounce";
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const apiKey = "3a694353f8738d14f5f72dd344727341";
   const apiUrl = "https://api.themoviedb.org/3/search/movie";
@@ -18,35 +18,34 @@ const MoviesPage = () => {
     const queryFromParams = searchParams.get("query") ?? "";
     setQuery(queryFromParams);
   }, [searchParams]);
-  const [debouncedQuery] = useDebounce(query, 300);
 
-  useEffect(() => {
-    if (!debouncedQuery) return;
-
+  const fetchMovies = async () => {
+    if (!query) return;
     setLoading(true);
-
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get(apiUrl, {
-          params: {
-            api_key: apiKey,
-            query: query,
-            language: "en-US",
-          },
-        });
-        setMovies(response.data.results);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.error("Error fetching movies:", error);
-      }
-    };
-    fetchMovies();
-  }, [debouncedQuery]);
+    try {
+      const response = await axios.get(apiUrl, {
+        params: {
+          api_key: apiKey,
+          query: query,
+          language: "en-US",
+        },
+      });
+      setMovies(response.data.results);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSearch = () => {
-    if (!query) return;
+    if (!query) {
+      setErrorMessage("Please enter a movie name");
+      return;
+    }
+    setErrorMessage("");
     setSearchParams({ query });
+    fetchMovies();
   };
 
   return (
@@ -60,6 +59,7 @@ const MoviesPage = () => {
         />
         <button onClick={handleSearch}>Search</button>
       </div>
+      {errorMessage && <p className={css.errorMessage}>{errorMessage}</p>}
       {loading ? <p>Loading...</p> : <MovieList movies={movies} />}
     </>
   );

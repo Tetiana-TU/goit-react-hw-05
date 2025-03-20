@@ -3,3 +3,8 @@
   flex-direction: row;
   gap: 10px;
 }
+.errorMessage {
+  color: red;
+  font-size: 20px;
+  margin-top: 10px;
+}
