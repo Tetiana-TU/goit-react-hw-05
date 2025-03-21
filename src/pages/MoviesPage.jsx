@@ -4,49 +4,58 @@ import axios from "axios";
 import MovieList from "../components/MovieList";
 import css from "./MoviesPage.module.css";
 
+const apiKey = "3a694353f8738d14f5f72dd344727341";
+axios.defaults.baseURL = "https://api.themoviedb.org/3";
+
+const END_POINTS = {
+  querySearch: "/search/movie",
+};
+export const fetchMovies = async (query, page = 1) => {
+  const res = await axios.get(
+    `${END_POINTS.querySearch}?api_key=${apiKey}&page=${page}&query=${query}&language=en-US&include_adult=false`
+  );
+
+  return res.data.results;
+};
+
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const [errorMessage, setErrorMessage] = useState("");
-
-  const apiKey = "3a694353f8738d14f5f72dd344727341";
-  const apiUrl = "https://api.themoviedb.org/3/search/movie";
+  const searchRequest = searchParams.get("query");
 
   useEffect(() => {
-    const queryFromParams = searchParams.get("query") ?? "";
-    setQuery(queryFromParams);
-  }, [searchParams]);
-
-  const fetchMovies = async () => {
-    if (!query) return;
-    setLoading(true);
-    try {
-      const response = await axios.get(apiUrl, {
-        params: {
-          api_key: apiKey,
-          query: query,
-          language: "en-US",
-        },
-      });
-      setMovies(response.data.results);
-    } catch (error) {
-      console.error("Error fetching movies:", error);
-    } finally {
-      setLoading(false);
+    if (!searchRequest) {
+      return;
     }
-  };
+    const fetchMovie = () => {
+      setLoading(true);
+      fetchMovies(searchRequest)
+        .then((results) => {
+          if (!results.length) {
+            alert("No movies found!");
+          }
 
-  const handleSearch = () => {
+          setMovies(results);
+        })
+        .catch((error) => {
+          setError("Ooops. Something went wrong...");
+          console.log(error);
+        })
+        .finally(setLoading(false));
+    };
+    fetchMovie();
+  }, [searchRequest]);
+  function handleSearch() {
     if (!query) {
       setErrorMessage("Please enter a movie name");
       return;
     }
     setErrorMessage("");
     setSearchParams({ query });
-    fetchMovies();
-  };
+  }
 
   return (
     <>
